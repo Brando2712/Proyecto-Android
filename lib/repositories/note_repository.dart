@@ -6,10 +6,16 @@ import '../data/note_db.dart';
 import '../models/note.dart';
 
 class NoteRepository {
-  NoteRepository._private();
+  NoteRepository._private() {
+    _controller = StreamController<List<Note>>.broadcast(onListen: () {
+      // when a new listener subscribes, emit the current list
+      _emit();
+    });
+  }
+
   static final NoteRepository instance = NoteRepository._private();
 
-  final _controller = StreamController<List<Note>>.broadcast();
+  late final StreamController<List<Note>> _controller;
 
   Stream<List<Note>> get notesStream => _controller.stream;
 

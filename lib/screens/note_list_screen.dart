@@ -22,7 +22,7 @@ class _NoteListScreenState extends State<NoteListScreen> {
       body: RefreshIndicator(
         onRefresh: () async {
           // repository stream already updates; force emit
-          await vm.notes.isEmpty ? Future.value() : Future.value();
+          vm.notes.isEmpty ? Future.value() : Future.value();
         },
         child: vm.notes.isEmpty
             ? const Center(child: Text('No hay notas'))
