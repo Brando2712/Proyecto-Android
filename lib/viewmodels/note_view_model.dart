@@ -9,6 +9,9 @@ class NoteViewModel extends ChangeNotifier {
   final NoteRepository _repo = NoteRepository.instance;
   List<Note> _notes = [];
   StreamSubscription<List<Note>>? _sub;
+  bool _isLoading = true;
+
+  bool get isLoading => _isLoading;
 
   List<Note> get notes => _notes;
 
@@ -19,6 +22,19 @@ class NoteViewModel extends ChangeNotifier {
     }, onError: (err) {
       // ignore errors for now
     });
+    // initialize DB and emit in background without blocking UI
+    _initAsync();
+  }
+
+  Future<void> _initAsync() async {
+    try {
+      await _repo.init();
+    } catch (_) {
+      // ignore for now
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> addNote(Note note) async {

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Modify this file to customize your launch splash screen -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/white" />
+    <!-- Use app background color to avoid black flash on startup -->
+    <item android:drawable="@color/space_indigo" />
 
-    <!-- You can insert your own image assets here -->
+    <!-- Optional centered logo (uncomment and add asset to mipmap if available) -->
     <!-- <item>
         <bitmap
             android:gravity="center"
