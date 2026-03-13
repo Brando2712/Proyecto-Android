@@ -24,7 +24,7 @@ Dependencias principales definidas en `pubspec.yaml`:
 
 # ✅ Requisitos mínimos para compilar
 
-## Entorno base
+## Entorno base 
 
 * **Flutter SDK:** `3.41.4` (canal stable)
 * **Dart SDK:** `3.11.1`
