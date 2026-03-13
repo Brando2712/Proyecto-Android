@@ -1,52 +1,258 @@
-## Proyecto App Notas
+# 📱 App Notas (Flutter)
 
-Aplicación móvil de notas (prototipo) con arquitectura MVVM y persistencia local.
+Aplicación móvil de notas desarrollada con **Flutter** utilizando arquitectura **MVVM** y persistencia local con **SQLite**.
 
-### Implementado
-- Entidad `Note` en `lib/models/note.dart` con: `id`, `title`, `content`, `createdAt`, `updatedAt`, `isPinned`.
-- Persistencia local con SQLite usando `sqflite` y helper en `lib/data/note_db.dart`.
-- Repositorio `lib/repositories/note_repository.dart` que expone un `Stream<List<Note>>` y operaciones CRUD.
-- `NoteViewModel` en `lib/viewmodels/note_view_model.dart` (extiende `ChangeNotifier`) que suscribe al stream del repositorio y maneja el estado de carga.
-- UI:
-	- `lib/screens/note_list_screen.dart`: lista de notas con búsqueda por título, FAB para nueva nota, orden por `isPinned` y `updatedAt`, swipe para eliminar con diálogo de confirmación.
-	- `lib/screens/note_edit_screen.dart`: crear/editar nota (título y contenido) con validación (el título no puede quedar vacío).
-	- `lib/widgets/note_card.dart`: componente de tarjeta personalizado con truncado de descripción, timestamp, icono de favorito y animación al presionar.
-- Visual: paleta de colores aplicada en `lib/main.dart` (Space Indigo, Blue Slate, Ash Grey, Dark Khaki, Black Forest) y ajustes tipográficos.
-- Funcionalidades adicionales: búsqueda en AppBar, marcar/desmarcar como favorito (campo `isPinned`) con destacado visual, confirmación al eliminar, validación de título, carga asíncrona de la BD para reducir tiempo de arranque.
-- Dependencias añadidas en `pubspec.yaml`: `sqflite`, `path`, `provider`.
+El objetivo del proyecto es implementar una aplicación sencilla de gestión de notas que permita crear, editar, eliminar, buscar y destacar notas importantes, manteniendo los datos almacenados localmente en el dispositivo.
 
-### Comportamiento relevante
-- La lista se actualiza automáticamente después de operaciones CRUD mediante streams y `notifyListeners()`; la UI no requiere recarga manual.
-- Los datos persisten entre cierres de la app (almacenamiento en `notes.db`).
-- Confirmación de eliminación implementada para evitar borrados accidentales.
-- Validación de título: al crear/editar, el título no puede quedar vacío; se muestra un `SnackBar` si no se cumple.
-- Búsqueda: campo en el `AppBar` para filtrar notas por título en tiempo real.
-- Fav/Pin: las notas se pueden marcar como favoritas (`isPinned`); las tarjetas cambian sutilmente de color y el icono de estrella indica el estado.
-- Inicialización de la BD: ahora se realiza de forma asíncrona en el `ViewModel` para no bloquear el arranque; se muestra un indicador de carga mientras se inicializa.
+---
 
-### Cómo ejecutar
-1. Instalar dependencias:
+# 🚀 Tecnologías utilizadas
+
+* Flutter
+* Dart
+* SQLite (sqflite)
+* Provider (gestión de estado)
+* Arquitectura MVVM
+
+Dependencias principales definidas en `pubspec.yaml`:
+
+* `sqflite`
+* `path`
+* `provider`
+
+---
+
+# ✅ Requisitos mínimos para compilar
+
+## Entorno base
+
+* **Flutter SDK:** `3.41.4` (canal stable)
+* **Dart SDK:** `3.11.1`
+* **Java (JDK):** `17` (requerido por el proyecto Android)
+* **Gradle Wrapper:** `8.14`
+* **Android Gradle Plugin (AGP):** `8.11.1`
+* **Kotlin Android Plugin:** `2.2.20`
+
+## Android (app)
+
+En este proyecto, los valores Android se heredan desde Flutter en `android/app/build.gradle.kts`:
+
+* `minSdk = flutter.minSdkVersion`
+* `targetSdk = flutter.targetSdkVersion`
+* `compileSdk = flutter.compileSdkVersion`
+
+Esto significa que la versión exacta depende del Flutter SDK instalado.
+
+Como referencia, en plantillas actuales de Flutter el **mínimo soportado suele ser Android 5.0 (API 21)**, pero debes validar en tu entorno con:
 
 ```bash
+flutter doctor -v
+```
+
+## Herramientas Android recomendadas
+
+* Android Studio (última estable)
+* Android SDK Platform + Build-Tools para el `compileSdk` resuelto por Flutter
+* Dispositivo físico con depuración USB o emulador Android
+
+---
+
+# 🏗 Arquitectura del proyecto
+
+El proyecto sigue el patrón **MVVM (Model - View - ViewModel)** para separar responsabilidades.
+
+```
+lib/
+│
+├── models/
+│   └── note.dart
+│
+├── data/
+│   └── note_db.dart
+│
+├── repositories/
+│   └── note_repository.dart
+│
+├── viewmodels/
+│   └── note_view_model.dart
+│
+├── screens/
+│   ├── note_list_screen.dart
+│   └── note_edit_screen.dart
+│
+├── widgets/
+│   └── note_card.dart
+│
+└── main.dart
+```
+
+### Model
+
+Define la estructura de datos de las notas.
+
+### Repository
+
+Encapsula el acceso a datos y expone métodos CRUD.
+
+### ViewModel
+
+Gestiona el estado de la aplicación y comunica la lógica entre la UI y el repositorio.
+
+### View
+
+Pantallas y widgets que presentan la información al usuario.
+
+---
+
+# 📦 Funcionalidades implementadas
+
+### Gestión de notas
+
+* Crear notas
+* Editar notas
+* Eliminar notas
+* Persistencia local con SQLite
+
+### Organización
+
+* Marcar notas como favoritas (`isPinned`)
+* Orden automático por favoritas y fecha de actualización
+
+### Búsqueda
+
+* Búsqueda en tiempo real por título desde el `AppBar`
+
+### Interfaz
+
+* Tarjetas personalizadas para mostrar notas
+* Animación al presionar tarjetas
+* Icono de favorito
+* Confirmación antes de eliminar
+
+### Validaciones
+
+* El título de la nota no puede quedar vacío
+* Se muestra un `SnackBar` si la validación falla
+
+---
+
+# 💾 Persistencia de datos
+
+Los datos se almacenan en una base de datos local SQLite:
+
+```
+notes.db
+```
+
+Esto permite que las notas **persistan incluso después de cerrar la aplicación**.
+
+---
+
+# 🎨 Diseño visual
+
+Se aplicó una paleta de colores personalizada definida en `main.dart`:
+
+* Space Indigo
+* Blue Slate
+* Ash Grey
+* Dark Khaki
+* Black Forest
+
+Además se realizaron ajustes tipográficos para mejorar la legibilidad de la aplicación.
+
+---
+
+# ⚙️ Cómo ejecutar el proyecto
+
+### 1️⃣ Clonar el repositorio
+
+```
+git clone <url-del-repositorio>
+cd app_notas
+```
+
+### 2️⃣ Instalar dependencias
+
+```
 flutter pub get
 ```
 
-2. Ejecutar la app (dispositivo conectado o emulador):
+### 3️⃣ Ejecutar la aplicación
 
-```bash
+Con un dispositivo conectado o emulador activo:
+
+```
 flutter run
 ```
 
-### Próximos pasos recomendados
-- Añadir inyección de dependencias (ej. `get_it`) y separar interfaces para testing.
-- Añadir migraciones de DB y manejo de errores en inicialización.
-- Implementar pruebas unitarias y de widget (ej. para `NoteCard`, búsqueda y validación).
-- Medir tiempos de arranque y evaluar mover consultas iniciales a un isolate si la carga inicial es pesada.
-- Mejoras de UX adicionales: pantalla splash, animaciones más elaboradas, búsqueda avanzada y etiquetas.
+Hay que tener en cuenta tambien que al conectar un dispositivo hay que identificar su id, para eso usamos el comando:
 
-Si quieres, puedo:
-- Añadir una pantalla splash que espere la inicialización de la BD.
-- Implementar DI con `get_it` y adaptar `NoteViewModel` para recibir el repositorio por constructor.
-- Añadir animación al icono de favorito y preparar tests de widget.
-- Preparar un commit con mensaje y rama recomendada.
+```
+flutter devices
+```
 
+y con el id de nuestro dispositivo usamos el siguiente comando para ejecutarlo en dicho dispositivo:
+
+```
+flutter run -d <id>
+```
+
+---
+
+# 📦 Generar APK de la aplicación
+
+Para generar el APK de distribución ejecutar:
+
+```
+flutter build apk --release
+```
+
+El archivo se generará en:
+
+```
+build/app/outputs/flutter-apk/app-release.apk
+```
+
+Para la entrega del proyecto el APK se encuentra en:
+
+```
+release/app-release.apk
+```
+
+---
+
+# 📸 Screenshots
+
+Agregar aquí capturas de la aplicación funcionando.
+
+Ejemplo:
+
+```
+/screenshots/home.png
+/screenshots/edit_note.png
+```
+
+---
+
+# 🧠 Decisiones de diseño
+
+* Se utilizó **MVVM** para mantener una separación clara entre la lógica de negocio y la interfaz de usuario.
+* Se empleó **Provider** para la gestión de estado por ser una solución simple y ampliamente utilizada en Flutter.
+* La persistencia se implementó con **SQLite** para permitir almacenamiento local sin necesidad de conexión a internet.
+* Se utilizó un **Stream<List<Note>>** en el repositorio para que la interfaz se actualice automáticamente tras operaciones CRUD.
+* La base de datos se inicializa de forma **asíncrona** para evitar bloquear el inicio de la aplicación.
+
+---
+
+# 📌 Mejoras futuras
+
+* Sincronización en la nube
+* Etiquetas o categorías para notas
+* Modo oscuro
+* Recordatorios o notificaciones
+
+---
+
+# 👨‍💻 Autor Brando Andrade
+
+Proyecto desarrollado como práctica académica.
