@@ -223,14 +223,7 @@ release/app-release.apk
 
 # 📸 Screenshots
 
-Agregar aquí capturas de la aplicación funcionando.
-
-Ejemplo:
-
-```
-/screenshots/home.png
-/screenshots/edit_note.png
-```
+Capturas de la aplicación funcionando se lo puede encontrar en la carpeta de screenshots.
 
 ---
 
