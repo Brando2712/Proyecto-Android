@@ -1,4 +1,9 @@
+// ignore: unused_import
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+// ignore: unused_import
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../models/note.dart';
@@ -30,7 +35,9 @@ class _NoteListScreenState extends State<NoteListScreen> {
         title: _searching
             ? TextField(
                 autofocus: true,
-                decoration: const InputDecoration(hintText: 'Buscar por título', border: InputBorder.none),
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                decoration: const InputDecoration(hintText: 'Buscar por título', hintStyle: TextStyle(color: Colors.white70), border: InputBorder.none),
                 onChanged: (v) => setState(() => _query = v),
               )
             : const Text('Notas'),
@@ -91,8 +98,7 @@ class _NoteListScreenState extends State<NoteListScreen> {
                           return false;
                         },
                         child: NoteCard(
-                          note: note,
-                          highlight: _searching && _query.isNotEmpty,
+                          note: note,               
                           onTap: () async {
                             await Navigator.of(context).push(MaterialPageRoute(builder: (_) => NoteEditScreen(note: note)));
                           },
